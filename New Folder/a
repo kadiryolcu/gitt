@@ -1,0 +1,103 @@
+ip addr
+ssh user1@192.168.122.216
+su
+apt update
+apt upgrade -y
+apt autoremove -y
+
+apt install -y \
+curl \
+wget \
+tar \
+unzip \
+git \
+ca-certificates \
+libssl-dev \
+zlib1g-dev \
+libicu-dev \
+libkrb5-dev \
+liblttng-ust-dev \
+libcurl4-openssl-dev \
+libuuid1 \
+libunwind8 \
+libxml2 \
+build-essential
+
+apt install -y python3 python3-venv python3-pip python3-dev build-essential libssl-dev libffi-dev libsqlite3-dev zlib1g-dev libbz2-dev libreadline-dev libncurses5-dev libncursesw5-dev liblzma-dev libgdbm-dev libnss3-dev curl wget git
+
+python3 -m venv testenv
+source testenv/bin/activate
+
+
+
+wget https://builds.dotnet.microsoft.com/dotnet/Sdk/9.0.305/dotnet-sdk-9.0.305-linux-x64.tar.gz -O dotnet-sdk.tar.gz
+bash dotnet-install.sh --version 9.0 --install-dir ~/dotnet9_env
+mkdir -p ~/dotnet9_env
+tar -xzf dotnet-sdk.tar.gz -C ~/dotnet9_env
+
+
+export DOTNET_ROOT=$HOME/dotnet9_env
+export PATH=$DOTNET_ROOT:$PATH
+dotnet --version
+
+mkdir WebForms
+cd /WebForms
+git clone https://github.com/kadiryolcu/webForms.git .
+cd webForms
+
+
+
+nano ~/dotnet9_env/env.sh
+export DOTNET_ROOT=$HOME/dotnet9_env
+export PATH=$HOME/dotnet9_env:$PATH
+export ASPNETCORE_ENVIRONMENT=Development
+source ~/dotnet9_env/env.sh
+dotnet dev-certs https
+
+
+
+cd ~/WebForms/webForms
+export PATH="$PATH:/home/user1/.dotnet/tools"
+dotnet-ef migrations add InitialCreate
+dotnet-ef database update
+sudo -u postgres psql -d kursdb
+\dt
+
+
+
+dotnet run --urls https://0.0.0.0:5001
+
+
+
+sudo apt update
+sudo apt install postgresql postgresql-contrib -y
+
+
+pip install pgadmin4
+
+
+sudo systemctl start postgresql
+sudo systemctl enable postgresql
+sudo systemctl status postgresql
+
+sudo systemctl status postgresql
+sudo -u postgres psql
+CREATE DATABASE kursdb;
+\l
+ALTER USER postgres WITH PASSWORD 'Kadir38*';
+
+dotnet tool install --global dotnet-ef
+
+export PATH="$PATH:/home/user1/.dotnet/tools"
+dotnet-ef --version
+
+
+
+
+dotnet run --urls https://0.0.0.0:5001
+
+
+
+sudo -u postgres psql -d kursdb
+\dt
+SELECT * FROM "KursKayit";
